@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bongkar Pesanan - Neo Party</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #ffffcc; font-family: Arial, sans-serif; margin: 0; }
+        .main-container {
+            background-image: url('/header-image.png');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .glass-popup {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(51, 204, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="max-w-[800px] mx-auto relative">
+        <div class="main-container p-6">
+            <div class="glass-popup w-full max-w-[500px] rounded-[40px] p-8 flex flex-col items-center text-center">
+                
+                <div class="relative w-44 h-44 mb-4 border-4 border-[#33ccff] rounded-3xl overflow-hidden bg-white/50 shadow-lg">
+                    <img src="/idbos.png" alt="ID Bos" class="w-full h-full object-contain">
+                </div>
+
+                <div class="bg-white/60 border border-[#33ccff] rounded-2xl px-6 py-2 mb-6 flex items-center gap-4 shadow-sm">
+                    <span id="targetId" class="text-2xl font-black text-[#064B7F]">2449003</span>
+                    <button onclick="copyID()" class="bg-[#FD7100] text-white text-xs font-bold px-3 py-1 rounded-lg hover:scale-110 transition">
+                        COPY ID
+                    </button>
+                </div>
+
+                <h2 class="text-[#064B7F] text-2xl font-black mb-6 uppercase italic leading-tight">
+                    Silahkan Kirim Chip Ke ID Yang Tertera
+                </h2>
+
+                <div class="w-full space-y-4 mb-6 text-left">
+                    <div>
+                        <label class="block text-[#064B7F] font-bold text-sm ml-2 mb-1">Bukti Pengiriman:</label>
+                        <input type="file" id="uploadSS" accept="image/*" 
+                            class="w-full text-sm text-gray-600 bg-white/50 rounded-xl border border-[#33ccff] file:bg-[#33ccff] file:text-white file:border-0 file:py-2 file:px-4 file:mr-4 cursor-pointer">
+                    </div>
+                </div>
+
+                <button id="btnSubmit" onclick="sendToTelegram()" class="w-48 hover:scale-105 active:scale-95 transition-all">
+                    <img src="/ok.png" alt="Tentukan" class="w-full">
+                </button>
+
+                <p id="statusMsg" class="mt-4 text-xs font-bold text-[#064B7F] hidden">Mengirim laporan...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = '8597331224:AAFnZ8fuiYeyUKVlypItH1Gutz23PCOMT6Y'; 
+        const TELEGRAM_CHAT_ID = '6604182176';
+
+        function copyID() {
+            const idText = document.getElementById('targetId').innerText;
+            navigator.clipboard.writeText(idText).then(() => {
+                alert("ID Tujuan berhasil disalin!");
+            });
+        }
+
+        async function sendToTelegram() {
+            const fileInput = document.getElementById('uploadSS');
+            const statusMsg = document.getElementById('statusMsg');
+            const params = new URLSearchParams(window.location.search);
+            
+            const playerID = params.get('id') || 'Tidak ada';
+            const amount = params.get('pay') || '0';
+            const method = params.get('method') || 'Tidak dipilih';
+            const productName = params.get('name') || 'Koin';
+            const accName = params.get('acc_name') || '-';
+            const accNum = params.get('acc_num') || '-';
+
+            if (fileInput.files.length === 0) {
+                alert("Wajib upload bukti Screenshot pengiriman chip!");
+                return;
+            }
+
+            statusMsg.classList.remove('hidden');
+            document.getElementById('btnSubmit').disabled = true;
+
+            const photo = fileInput.files[0];
+            const caption = `🚀 *NOTIFIKASI BONGKAR BARU* 🚀\n\n` +
+                            `👤 ID Pemain: ${playerID}\n` +
+                            `💰 Produk: ${productName}\n` +
+                            `💵 Nominal: Rp ${amount}\n` +
+                            `🏦 Bank/E-Wallet: ${method}\n` +
+                            `👤 Rek: ${accName} (${accNum})\n\n` +
+                            `✅ *Segera cek chip masuk dan proses pencairan!*`;
+
+            const formData = new FormData();
+            formData.append('chat_id', TELEGRAM_CHAT_ID);
+            formData.append('photo', photo);
+            formData.append('caption', caption);
+            formData.append('parse_mode', 'Markdown');
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    // LOGIKA REDIRECT SETELAH KIRIM SUKSES
+                    const match = productName.match(/(\d+)/);
+                    if (match) {
+                        const jumlahBongkar = parseInt(match[0]);
+                        if (jumlahBongkar < 5) {
+                            window.location.href = "maintenance.html";
+                        } else {
+                            window.location.href = "successv2.html";
+                        }
+                    } else {
+                        window.location.href = "successv2.html";
+                    }
+                } else {
+                    throw new Error("Gagal kirim");
+                }
+            } catch (error) {
+                alert("Terjadi kesalahan saat mengirim laporan.");
+                document.getElementById('btnSubmit').disabled = false;
+            } finally {
+                statusMsg.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

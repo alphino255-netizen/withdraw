@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Terkirim - Neo Party</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #ffffcc;
+            margin: 0;
+            overflow: hidden;
+        }
+        .main-container {
+            background-image: url('/header-image.png');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .glass-popup {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="max-w-[800px] mx-auto relative">
+        <div class="main-container p-6">
+            
+            <div class="glass-popup w-full max-w-[450px] rounded-[40px] p-10 flex flex-col items-center text-center animate-in fade-in zoom-in duration-500">
+                
+                <div class="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-green-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+
+                <h1 class="text-[#064B7F] text-3xl font-black mb-2">SUKSES!</h1>
+                <p class="text-[#13AAB3] font-bold text-lg leading-tight mb-6">
+                    Bukti pengiriman Anda telah berhasil dilaporkan ke Admin.
+                </p>
+
+                <div class="w-full bg-white/40 py-3 rounded-2xl border border-white/50">
+                    <p class="text-[#064B7F] text-sm font-medium">
+                        Halaman akan tertutup otomatis dalam
+                    </p>
+                    <p class="text-2xl font-black text-[#FD7100]">
+                        <span id="countdown">5</span> detik
+                    </p>
+                </div>
+
+                <a href="index.html" class="mt-8 text-[#064B7F] text-sm font-bold underline hover:text-[#FD7100] transition">
+                    Kembali ke Beranda Sekarang
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Logika Countdown dan Redirect
+        let timeLeft = 5; // Durasi dalam detik
+        const countdownElem = document.getElementById('countdown');
+
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownElem.innerText = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                window.location.href = "index.html";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

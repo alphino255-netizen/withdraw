@@ -1,79 +1,1100 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Informasi Pencairan - Neo Party</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
+
+
     <style>
-        body { background-color: #ffffcc; font-family: Arial, sans-serif; margin: 0; }
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            min-height: 100%;
+        }
+
+
+        body {
+            background-color: #ffffcc;
+
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* =========================================
+           MAIN CONTAINER
+        ========================================= */
+
         .main-container {
-            background-image: url('/header-image.png');
+
+            background-image:
+                url('/header-image.png');
+
             background-size: cover;
+
             background-position: center;
+
+            background-repeat: no-repeat;
+
             min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
+            min-height: 100dvh;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px 16px;
         }
+
+
+        /* =========================================
+           GLASS CARD
+        ========================================= */
+
         .glass-popup {
-            background: rgba(255, 255, 255, 0.45);
+
+            width: 100%;
+
+            max-width: 500px;
+
+            background:
+                rgba(255, 255, 255, 0.45);
+
             backdrop-filter: blur(12px);
+
             -webkit-backdrop-filter: blur(12px);
-            border: 2px solid rgba(51, 204, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+
+            border:
+                2px solid
+                rgba(51, 204, 255, 0.5);
+
+            box-shadow:
+                0 8px 32px
+                rgba(31, 38, 135, 0.2);
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
         }
+
+
+        /* =========================================
+           TITLE
+        ========================================= */
+
+        .page-title {
+
+            color: #064B7F;
+
+            font-size: 26px;
+
+            font-weight: 900;
+
+            font-style: italic;
+
+            text-transform: uppercase;
+
+            text-align: center;
+
+            margin: 0 0 8px;
+        }
+
+
+        .page-subtitle {
+
+            color: #13AAB3;
+
+            font-weight: 700;
+
+            text-align: center;
+
+            background:
+                rgba(255, 255, 255, 0.50);
+
+            border:
+                1px solid #33ccff;
+
+            border-radius: 999px;
+
+            padding: 6px 16px;
+
+            margin-bottom: 24px;
+
+            max-width: 100%;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           FORM
+        ========================================= */
+
+        .form-area {
+
+            width: 100%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 16px;
+
+            margin-bottom: 24px;
+        }
+
+
+        .form-field {
+
+            width: 100%;
+        }
+
+
+        .input-box {
+
+            width: 100%;
+
+            min-height: 48px;
+
+            padding:
+                12px 14px;
+
+            background:
+                rgba(255, 255, 255, 0.70);
+
+            border-radius: 16px;
+
+            border:
+                2px solid #33ccff;
+
+            outline: none;
+
+            font-weight: 700;
+
+            color: #064B7F;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
+
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+
+        .input-box::placeholder {
+
+            color: #6b7280;
+
+            font-weight: 600;
+        }
+
+
+        .input-box:focus {
+
+            border-color: #FD7100;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(253, 113, 0, 0.10);
+        }
+
+
+        select.input-box {
+
+            cursor: pointer;
+
+            padding-right: 42px;
+
+            background-image:
+                linear-gradient(
+                    45deg,
+                    transparent 50%,
+                    #064B7F 50%
+                ),
+                linear-gradient(
+                    135deg,
+                    #064B7F 50%,
+                    transparent 50%
+                );
+
+            background-position:
+                calc(100% - 20px) 21px,
+                calc(100% - 14px) 21px;
+
+            background-size:
+                6px 6px,
+                6px 6px;
+
+            background-repeat: no-repeat;
+        }
+
+
+        /* =========================================
+           PAYOUT PREVIEW
+        ========================================= */
+
+        .payout-preview {
+
+            width: 100%;
+
+            background:
+                rgba(255, 255, 255, 0.60);
+
+            border:
+                1px solid
+                rgba(51, 204, 255, 0.45);
+
+            border-radius: 18px;
+
+            padding: 14px 16px;
+
+            margin-bottom: 22px;
+
+            text-align: left;
+        }
+
+
+        .payout-label {
+
+            color: #6b7280;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            margin-bottom: 3px;
+        }
+
+
+        .payout-value {
+
+            color: #FD7100;
+
+            font-size: 22px;
+
+            font-weight: 900;
+        }
+
+
+        /* =========================================
+           BUTTON AREA
+        ========================================= */
+
+        .action-area {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-direction: column;
+
+            text-align: center;
+        }
+
+
+        #nextButton {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 190px;
+
+            max-width: 80%;
+
+            margin: 0 auto;
+
+            padding: 0;
+
+            border: 0;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            appearance: none;
+            -webkit-appearance: none;
+
+            transition:
+                transform 0.2s,
+                opacity 0.2s;
+        }
+
+
+        #nextButton:hover {
+
+            transform: scale(1.05);
+        }
+
+
+        #nextButton:active {
+
+            transform: scale(0.95);
+        }
+
+
+        #nextButton img {
+
+            display: block;
+
+            width: 100%;
+
+            height: auto;
+
+            margin: 0 auto;
+        }
+
+
+        #nextButton:disabled {
+
+            cursor: not-allowed;
+
+            transform: none;
+
+            opacity: 0.55;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 480px) {
+
+            .main-container {
+
+                padding:
+                    16px 12px;
+            }
+
+
+            .glass-popup {
+
+                padding:
+                    24px 20px;
+
+                border-radius: 32px;
+            }
+
+
+            .page-title {
+
+                font-size: 23px;
+            }
+
+
+            .page-subtitle {
+
+                font-size: 13px;
+
+                padding:
+                    6px 13px;
+            }
+
+
+            #nextButton {
+
+                width: 180px;
+            }
+
+
+            .payout-value {
+
+                font-size: 20px;
+            }
+
+        }
+
+    
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2147483647;
+            width: min(330px, calc(100vw - 40px));
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast-notif {
+            width: 100%;
+            background: rgba(10, 15, 25, 0.96);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transform: translateX(-120%);
+            opacity: 0;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast-notif.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+        }
+
+        .toast-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 9px;
+        }
+
+        .toast-title {
+            color: #00e5f4;
+            font-size: 14px;
+            font-weight: 900;
+            margin-bottom: 2px;
+        }
+
+        .toast-user {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .toast-desc {
+            color: #fff;
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.35;
+        }
+
+        @media (max-width: 600px) {
+            .toast-container {
+                top: 14px;
+                left: 14px;
+                width: calc(100vw - 28px);
+            }
+        }
+
     </style>
+
 </head>
+
+
 <body>
-    <div class="max-w-[800px] mx-auto relative">
-        <div class="main-container p-6">
-            <div class="glass-popup w-full max-w-[500px] rounded-[40px] p-8 flex flex-col items-center text-center">
-                
-                <h2 class="text-[#064B7F] text-2xl font-black mb-2 uppercase italic">DATA PENCAIRAN</h2>
-                <p id="selectedMethod" class="text-[#13AAB3] font-bold mb-6 bg-white/50 px-4 py-1 rounded-full border border-[#33ccff]">Metode: -</p>
 
-                <div class="w-full space-y-4 mb-8 text-left">
-                    <div>
-                        <label class="block text-[#064B7F] font-bold text-sm ml-2 mb-1">Nama Pemilik Rekening / E-Wallet:</label>
-                        <input type="text" id="acc_name" placeholder="Masukkan nama lengkap..." 
-                            class="w-full p-3 bg-white/70 rounded-2xl border-2 border-[#33ccff] outline-none focus:border-[#FD7100] transition-colors font-bold text-[#064B7F]">
-                    </div>
 
-                    <div>
-                        <label class="block text-[#064B7F] font-bold text-sm ml-2 mb-1">Nomor Rekening / HP E-Wallet:</label>
-                        <input type="number" id="acc_number" placeholder="Contoh: 0812xxx atau 7123xxx" 
-                            class="w-full p-3 bg-white/70 rounded-2xl border-2 border-[#33ccff] outline-none focus:border-[#FD7100] transition-colors font-bold text-[#064B7F]">
-                    </div>
+    <div class="main-container">
+
+
+        <div
+            class="glass-popup rounded-[40px] p-8"
+        >
+
+
+            <!-- =====================================
+                 TITLE
+            ====================================== -->
+
+            <h2 class="page-title">
+                DATA PENCAIRAN
+            </h2>
+
+
+            <p
+                id="selectedMethod"
+                class="page-subtitle"
+            >
+                Metode: -
+            </p>
+
+
+            <!-- =====================================
+                 PAYOUT PREVIEW
+            ====================================== -->
+
+            <div
+                id="payoutPreview"
+                class="payout-preview"
+            >
+
+                <div class="payout-label">
+                    NOMINAL PENCAIRAN
                 </div>
 
-                <button onclick="goToNextStep()" class="w-48 hover:scale-105 active:scale-95 transition-all">
-                    <img src="/ok.png" alt="Lanjut">
+                <div
+                    id="payoutAmount"
+                    class="payout-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 FORM
+            ====================================== -->
+
+            <div class="form-area">
+
+
+                <!-- NAMA -->
+
+                <div class="form-field">
+
+                    <label
+                        for="acc_name"
+                        class="block text-[#064B7F] font-bold text-sm ml-2 mb-1"
+                    >
+                        Nama Pemilik Rekening / E-Wallet:
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="acc_name"
+                        placeholder="Masukkan nama lengkap..."
+                        autocomplete="name"
+                        maxlength="100"
+                        class="input-box"
+                    >
+
+                </div>
+
+
+                <!-- NOMOR REKENING -->
+
+                <div class="form-field">
+
+                    <label
+                        for="acc_number"
+                        class="block text-[#064B7F] font-bold text-sm ml-2 mb-1"
+                    >
+                        Nomor Rekening / HP E-Wallet:
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="acc_number"
+                        inputmode="numeric"
+                        autocomplete="tel"
+                        placeholder="Contoh: 0812xxx atau 7123xxx"
+                        maxlength="30"
+                        class="input-box"
+                    >
+
+                </div>
+
+
+                <!-- BANK / E-WALLET -->
+
+                <div class="form-field">
+
+                    <label
+                        for="bank_method"
+                        class="block text-[#064B7F] font-bold text-sm ml-2 mb-1"
+                    >
+                        Bank / E-Wallet:
+                    </label>
+
+
+                    <select
+                        id="bank_method"
+                        class="input-box"
+                    >
+
+                        <option value="">
+                            Pilih Bank / E-Wallet...
+                        </option>
+
+
+                        <option value="BRI">
+                            BRI
+                        </option>
+
+
+                        <option value="BNI">
+                            BNI
+                        </option>
+
+
+                        <option value="BCA">
+                            BCA
+                        </option>
+
+
+                        <option value="MANDIRI">
+                            MANDIRI
+                        </option>
+
+
+                        <option value="DANA">
+                            DANA
+                        </option>
+
+
+                        <option value="OVO">
+                            OVO
+                        </option>
+
+
+                        <option value="GOPAY">
+                            GOPAY
+                        </option>
+
+
+                        <option value="SEABANK">
+                            SEABANK
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 BUTTON
+            ====================================== -->
+
+            <div class="action-area">
+
+                <button
+                    id="nextButton"
+                    type="button"
+                    onclick="goToNextStep()"
+                >
+
+                    <img
+                        src="/ok.png"
+                        alt="Lanjut"
+                    >
+
                 </button>
 
             </div>
+
+
         </div>
+
     </div>
 
+
     <script>
-        const params = new URLSearchParams(window.location.search);
-        document.getElementById('selectedMethod').innerText = "Metode: " + (params.get('method') || '-');
 
-        function goToNextStep() {
-            const name = document.getElementById('acc_name').value;
-            const number = document.getElementById('acc_number').value;
 
-            if (!name || !number) {
-                alert("Harap isi Nama dan Nomor Rekening dengan benar!");
-                return;
+        /* =========================================
+           AMBIL PARAMETER
+        ========================================= */
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        /* =========================================
+           PARAMETER PENTING
+        ========================================= */
+
+        const previousMethod =
+            params.get("method") || "-";
+
+
+        const price =
+            params.get("price") || "0";
+
+
+        const amount =
+            params.get("pay") || "0";
+
+
+        /* =========================================
+           FORMAT RUPIAH
+        ========================================= */
+
+        function formatRupiah(value) {
+
+            const number =
+                Number(value);
+
+
+            if (
+                !Number.isFinite(number) ||
+                number <= 0
+            ) {
+
+                return "-";
+
             }
 
-            // Teruskan semua data dari index + data baru dari form ini ke detail.html
-            const nextUrl = new URL('detail.html', window.location.origin);
-            params.forEach((value, key) => nextUrl.searchParams.append(key, value));
-            nextUrl.searchParams.append('acc_name', name);
-            nextUrl.searchParams.append('acc_num', number);
 
-            window.location.href = nextUrl.toString();
+            return number.toLocaleString(
+                "id-ID",
+                {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }
+            );
+
         }
+
+
+        /* =========================================
+           TAMPILKAN METODE SEBELUMNYA
+        ========================================= */
+
+        document
+            .getElementById(
+                "selectedMethod"
+            )
+            .textContent =
+                "Metode: " +
+                previousMethod;
+
+
+        /* =========================================
+           TAMPILKAN NOMINAL PENCAIRAN
+        ========================================= */
+
+        document
+            .getElementById(
+                "payoutAmount"
+            )
+            .textContent =
+                formatRupiah(price);
+
+
+        /* =========================================
+           HANYA ANGKA UNTUK NOMOR
+        ========================================= */
+
+        document
+            .getElementById("acc_number")
+            .addEventListener(
+                "input",
+                function() {
+
+                    this.value =
+                        this.value.replace(
+                            /\D/g,
+                            ""
+                        );
+
+                }
+            );
+
+
+        /* =========================================
+           LANJUT
+        ========================================= */
+
+        function goToNextStep() {
+
+
+            const name =
+                document
+                    .getElementById("acc_name")
+                    .value
+                    .trim();
+
+
+            const number =
+                document
+                    .getElementById("acc_number")
+                    .value
+                    .trim();
+
+
+            const bank =
+                document
+                    .getElementById("bank_method")
+                    .value;
+
+
+            const button =
+                document
+                    .getElementById("nextButton");
+
+
+            /* =====================================
+               VALIDASI NAMA
+            ===================================== */
+
+            if (!name) {
+
+                alert(
+                    "Harap isi Nama Pemilik Rekening / E-Wallet!"
+                );
+
+
+                document
+                    .getElementById("acc_name")
+                    .focus();
+
+
+                return;
+
+            }
+
+
+            /* =====================================
+               VALIDASI NOMOR
+            ===================================== */
+
+            if (!number) {
+
+                alert(
+                    "Harap isi Nomor Rekening / HP E-Wallet!"
+                );
+
+
+                document
+                    .getElementById("acc_number")
+                    .focus();
+
+
+                return;
+
+            }
+
+
+            if (number.length < 6) {
+
+                alert(
+                    "Nomor Rekening / E-Wallet terlalu pendek!"
+                );
+
+
+                document
+                    .getElementById("acc_number")
+                    .focus();
+
+
+                return;
+
+            }
+
+
+            /* =====================================
+               VALIDASI BANK
+            ===================================== */
+
+            if (!bank) {
+
+                alert(
+                    "Harap pilih Bank / E-Wallet!"
+                );
+
+
+                document
+                    .getElementById("bank_method")
+                    .focus();
+
+
+                return;
+
+            }
+
+
+            /* =====================================
+               DISABLE BUTTON
+            ===================================== */
+
+            button.disabled = true;
+
+
+            /* =====================================
+               BUAT URL DETAIL
+            ===================================== */
+
+            const nextUrl =
+                new URL(
+                    "detail.html",
+                    window.location.origin
+                );
+
+
+            /* =====================================
+               TERUSKAN SEMUA PARAMETER
+            ===================================== */
+
+            params.forEach(
+                (value, key) => {
+
+                    nextUrl.searchParams.set(
+                        key,
+                        value
+                    );
+
+                }
+            );
+
+
+            /* =====================================
+               DATA PENCAIRAN
+            ===================================== */
+
+            nextUrl.searchParams.set(
+                "acc_name",
+                name
+            );
+
+
+            nextUrl.searchParams.set(
+                "acc_num",
+                number
+            );
+
+
+            nextUrl.searchParams.set(
+                "method",
+                bank
+            );
+
+
+            /* =====================================
+               REDIRECT
+            ===================================== */
+
+            window.location.href =
+                nextUrl.toString();
+
+        }
+
+
+        /* =========================================
+           ENTER SUPPORT
+        ========================================= */
+
+        document
+            .getElementById("acc_number")
+            .addEventListener(
+                "keydown",
+                function(event) {
+
+                    if (
+                        event.key === "Enter"
+                    ) {
+
+                        event.preventDefault();
+
+                        goToNextStep();
+
+                    }
+
+                }
+            );
+
+
+    </script>
+
+
+
+    <div id="toast-container" class="toast-container"></div>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+const sampleActivities = [
+    { user: "ohandi", method: "Dana", nominal: "62.000", chip: "1B" },
+    { user: "RizkyGamer", method: "OVO", nominal: "124.000", chip: "2B" },
+    { user: "andika_01", method: "BCA", nominal: "186.000", chip: "3B" },
+    { user: "shadowX", method: "GoPay", nominal: "248.000", chip: "4B" },
+    { user: "ZakyPro", method: "BRI", nominal: "310.000", chip: "5B" },
+    { user: "ahmad", method: "Dana", nominal: "372.000", chip: "6B" },
+    { user: "sultanboss", method: "OVO", nominal: "434.000", chip: "7B" },
+    { user: "dimas", method: "BCA", nominal: "496.000", chip: "8B" },
+    { user: "Rizky", method: "GoPay", nominal: "558.000", chip: "9B" },
+    { user: "luffy", method: "BRI", nominal: "620.000", chip: "10B" }
+];
+            function createActivityNotification() {
+                const container = document.getElementById("toast-container");
+                if (!container) return;
+
+                const item = sampleActivities[
+                    Math.floor(Math.random() * sampleActivities.length)
+                ];
+
+                const toast = document.createElement("div");
+                toast.className = "toast-notif";
+
+                toast.innerHTML = `
+                    <div class="toast-icon">
+                        <img src="neo.jpg" alt="Neo Party">
+                    </div>
+                    <div>
+                        <div class="toast-title">BONGKAR SUKSES</div>
+                        <div class="toast-user">${item.user}</div>
+                        <div class="toast-desc">
+                            ${item.method} - Rp ${item.nominal} - ${item.chip}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(toast);
+
+                requestAnimationFrame(function () {
+                    toast.classList.add("show");
+                });
+
+                setTimeout(function () {
+                    toast.classList.remove("show");
+
+                    setTimeout(function () {
+                        if (toast.parentNode) {
+                            toast.remove();
+                        }
+                    }, 550);
+                }, 4000);
+            }
+
+            setTimeout(createActivityNotification, 1500);
+            setInterval(createActivityNotification, 7000);
+        });
     </script>
 </body>
+
 </html>

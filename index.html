@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bongkar Koin - Neo Party</title>
+
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+
+    <!-- MD5 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            background-color: #ffffcc;
+            font-family: Arial, sans-serif;
+        }
+
+        /* =========================================
+           MAIN BACKGROUND
+        ========================================= */
+
+        .main-container {
+            background-image: url('/header-image.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            min-height: 100vh;
+            min-height: 100dvh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px 16px;
+        }
+
+        /* =========================================
+           MAIN CARD
+        ========================================= */
+
+        .glass-popup {
+            width: 100%;
+            max-width: 500px;
+
+            background: rgba(255, 255, 255, 0.45);
+
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+
+            border: 2px solid rgba(51, 204, 255, 0.5);
+
+            box-shadow:
+                0 8px 32px 0 rgba(31, 38, 135, 0.2);
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* =========================================
+           NEO LOGO FRAME
+        ========================================= */
+
+        .neo-logo-frame {
+            width: 150px;
+            height: 150px;
+
+            margin: 0 auto 20px;
+
+            padding: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 4px solid #33ccff;
+            border-radius: 28px;
+
+            background: rgba(255, 255, 255, 0.75);
+
+            overflow: hidden;
+
+            box-shadow:
+                0 8px 24px rgba(31, 38, 135, 0.15);
+        }
+
+        .neo-logo-frame img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+            object-position: center;
+
+            border-radius: 16px;
+        }
+
+        /* =========================================
+           INPUT
+        ========================================= */
+
+        .input-box {
+            width: 100%;
+
+            padding: 13px 15px;
+
+            background: rgba(255, 255, 255, 0.70);
+
+            border-radius: 16px;
+
+            border: 2px solid #33ccff;
+
+            outline: none;
+
+            font-weight: bold;
+            color: #064B7F;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            border-color: #FD7100;
+
+            box-shadow:
+                0 0 0 3px rgba(253, 113, 0, 0.10);
+        }
+
+        /* =========================================
+           FORM WRAPPER
+        ========================================= */
+
+        .form-area {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 16px;
+
+            margin-bottom: 22px;
+        }
+
+        .form-field {
+            width: 100%;
+        }
+
+        /* =========================================
+           BUTTON WRAPPER
+           INI YANG MEMASTIKAN TOMBOL TIDAK
+           BERADA DI SAMPING
+        ========================================= */
+
+        .action-area {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            margin-top: 2px;
+        }
+
+        #nextButton {
+            display: flex;
+
+            width: 190px;
+            max-width: 80%;
+
+            margin: 0 auto;
+
+            padding: 0;
+
+            border: 0;
+            background: transparent;
+
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        #nextButton img {
+            display: block;
+
+            width: 100%;
+            height: auto;
+
+            margin: 0 auto;
+        }
+
+        #nextButton:disabled {
+            cursor: not-allowed;
+        }
+
+        /* =========================================
+           LOADING
+        ========================================= */
+
+        .loading {
+            display: none;
+
+            width: 100%;
+
+            text-align: center;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        /* =========================================
+           MODAL
+        ========================================= */
+
+        .modal-overlay {
+            position: fixed;
+
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0, 0, 0, 0.45);
+
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 9999;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .confirm-box {
+            width: 100%;
+            max-width: 450px;
+
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            background: rgba(255, 255, 255, 0.94);
+
+            border: 2px solid #33ccff;
+
+            border-radius: 30px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 15px 50px rgba(0, 0, 0, 0.25);
+
+            animation: popup 0.2s ease-out;
+        }
+
+        @keyframes popup {
+
+            from {
+                opacity: 0;
+                transform: scale(0.94);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+        /* =========================================
+           INFO ROW
+        ========================================= */
+
+        .info-row {
+            background: rgba(51, 204, 255, 0.08);
+
+            border: 1px solid rgba(51, 204, 255, 0.35);
+
+            border-radius: 15px;
+
+            padding: 13px 15px;
+
+            margin-bottom: 10px;
+        }
+
+        /* =========================================
+           MODAL BUTTON
+        ========================================= */
+
+        .btn-confirm {
+            display: block;
+
+            background: #FD7100;
+            color: white;
+
+            border: 0;
+
+            border-radius: 16px;
+
+            font-weight: 900;
+
+            padding: 14px;
+
+            width: 100%;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .btn-confirm:hover {
+            transform: scale(1.02);
+
+            background: #ed6500;
+        }
+
+        .btn-cancel {
+            display: block;
+
+            background: #e5e7eb;
+            color: #374151;
+
+            border: 0;
+
+            border-radius: 16px;
+
+            font-weight: 900;
+
+            padding: 14px;
+
+            width: 100%;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: #d1d5db;
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 480px) {
+
+            .main-container {
+                padding: 16px 12px;
+            }
+
+            .glass-popup {
+                padding: 24px 20px;
+                border-radius: 32px;
+            }
+
+            .neo-logo-frame {
+                width: 135px;
+                height: 135px;
+
+                padding: 9px;
+
+                border-radius: 24px;
+            }
+
+            .neo-logo-frame img {
+                border-radius: 14px;
+            }
+
+            #nextButton {
+                width: 180px;
+            }
+
+            .confirm-box {
+                padding: 22px 18px;
+                border-radius: 24px;
+            }
+
+        }
+    
+        .toast-container{position:fixed;top:20px;left:20px;z-index:2147483647;width:min(330px,calc(100vw - 40px));display:flex;flex-direction:column;gap:12px;pointer-events:none}
+        .toast-notif{width:100%;background:rgba(10,15,25,.96);color:#fff;padding:12px 16px;border-radius:15px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 25px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.12);transform:translateX(-120%);opacity:0;transition:.5s cubic-bezier(.175,.885,.32,1.275)}
+        .toast-notif.show{transform:translateX(0);opacity:1}
+        .toast-icon{width:42px;height:42px;flex-shrink:0}
+        .toast-icon img{width:100%;height:100%;object-fit:cover;border-radius:9px}
+        .toast-title{color:#00e5f4;font-size:14px;font-weight:900;margin-bottom:2px}
+        .toast-user{color:#fff;font-size:15px;font-weight:800;margin-bottom:2px}
+        .toast-desc{color:#fff;font-size:13px;opacity:.9;line-height:1.35}
+        @media(max-width:600px){.toast-container{top:14px;left:14px;width:calc(100vw - 28px)}}
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="main-container">
+
+    <div class="glass-popup rounded-[40px] p-8">
+
+        <!-- =====================================
+             NEO LOGO
+        ====================================== -->
+
+        <div class="neo-logo-frame">
+
+            <img
+                src="neo.jpg"
+                alt="Neo Party"
+            >
+
+        </div>
+
+
+        <!-- =====================================
+             TITLE
+        ====================================== -->
+
+        <h2 class="text-[#064B7F] text-2xl font-black mb-2 uppercase italic text-center">
+            BONGKAR KOIN
+        </h2>
+
+
+        <p class="text-[#13AAB3] font-bold mb-6 bg-white/50 px-4 py-1 rounded-full border border-[#33ccff] text-center">
+            Masukkan data bongkar
+        </p>
+
+
+        <!-- =====================================
+             FORM
+        ====================================== -->
+
+        <div class="form-area">
+
+            <!-- ID PEMAIN -->
+
+            <div class="form-field">
+
+                <label
+                    class="block text-[#064B7F] font-bold text-sm ml-2 mb-1"
+                    for="player_id"
+                >
+                    ID Pemain:
+                </label>
+
+                <input
+                    type="text"
+                    id="player_id"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    placeholder="Masukkan ID pemain..."
+                    class="input-box"
+                >
+
+            </div>
+
+
+            <!-- JUMLAH KOIN -->
+
+            <div class="form-field">
+
+                <label
+                    class="block text-[#064B7F] font-bold text-sm ml-2 mb-1"
+                    for="coin_amount"
+                >
+                    Jumlah Koin / Chip:
+                </label>
+
+                <select
+                    id="coin_amount"
+                    class="input-box"
+                >
+
+                    <option value="">
+                        Pilih jumlah bongkar...
+                    </option>
+
+                    <option
+                        value="1000000000"
+                        data-price="62000"
+                    >
+                        1B - 62 RIBU
+                    </option>
+
+                    <option
+                        value="2000000000"
+                        data-price="124000"
+                    >
+                        2B - 124 RIBU
+                    </option>
+
+                    <option
+                        value="3000000000"
+                        data-price="186000"
+                    >
+                        3B - 186 RIBU
+                    </option>
+
+                    <option
+                        value="4000000000"
+                        data-price="248000"
+                    >
+                        4B - 248 RIBU
+                    </option>
+
+                    <option
+                        value="5000000000"
+                        data-price="310000"
+                    >
+                        5B - 310 RIBU
+                    </option>
+
+                    <option
+                        value="6000000000"
+                        data-price="372000"
+                    >
+                        6B - 372 RIBU
+                    </option>
+
+                    <option
+                        value="7000000000"
+                        data-price="434000"
+                    >
+                        7B - 434 RIBU
+                    </option>
+
+                    <option
+                        value="8000000000"
+                        data-price="496000"
+                    >
+                        8B - 496 RIBU
+                    </option>
+
+                    <option
+                        value="9000000000"
+                        data-price="558000"
+                    >
+                        9B - 558 RIBU
+                    </option>
+
+                    <option
+                        value="10000000000"
+                        data-price="620000"
+                    >
+                        10B - 620 RIBU
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             BUTTON AREA
+        ====================================== -->
+
+        <div class="action-area">
+
+            <button
+                id="nextButton"
+                type="button"
+                onclick="checkPlayer()"
+            >
+
+                <img
+                    src="/ok.png"
+                    alt="Tentukan"
+                >
+
+            </button>
+
+
+            <p
+                id="loadingText"
+                class="loading mt-4 text-sm font-bold text-[#064B7F]"
+            >
+                Sedang mengecek ID pemain...
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     CONFIRMATION MODAL
+========================================= -->
+
+<div
+    id="confirmModal"
+    class="modal-overlay"
+>
+
+    <div class="confirm-box">
+
+        <h2 class="text-[#064B7F] text-2xl font-black text-center uppercase italic mb-2">
+            Konfirmasi Bongkar
+        </h2>
+
+        <p class="text-[#13AAB3] text-sm font-bold text-center mb-6">
+            Pastikan data di bawah sudah benar
+        </p>
+
+
+        <!-- ID -->
+
+        <div class="info-row">
+
+            <div class="text-xs font-bold text-gray-500">
+                ID
+            </div>
+
+            <div
+                id="confirmID"
+                class="text-lg font-black text-[#064B7F] break-all"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <!-- NICKNAME -->
+
+        <div class="info-row">
+
+            <div class="text-xs font-bold text-gray-500">
+                Nickname / Nama
+            </div>
+
+            <div
+                id="confirmNick"
+                class="text-lg font-black text-[#064B7F] break-all"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <!-- JUMLAH -->
+
+        <div class="info-row">
+
+            <div class="text-xs font-bold text-gray-500">
+                Jumlah Bongkar
+            </div>
+
+            <div
+                id="confirmAmount"
+                class="text-lg font-black text-[#FD7100]"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <!-- NOMINAL PENCAIRAN -->
+
+        <div class="info-row">
+
+            <div class="text-xs font-bold text-gray-500">
+                Nominal Pencairan
+            </div>
+
+            <div
+                id="confirmPrice"
+                class="text-lg font-black text-[#FD7100]"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="space-y-3 mt-6">
+
+            <button
+                type="button"
+                onclick="confirmAndContinue()"
+                class="btn-confirm"
+            >
+                KONFIRMASI & LANJUTKAN
+            </button>
+
+            <button
+                type="button"
+                onclick="closeConfirmation()"
+                class="btn-cancel"
+            >
+                BATAL
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CONFIG
+===================================================== */
+
+const API_URL =
+    "https://neo-ack.theneoparty.com/agent_recharge/order/info";
+
+const BAIT_PID = "1";
+
+const STATIC_SIG =
+    "7d83ac6f236288c720d7f4f4109a0776";
+
+
+/* =====================================================
+   FORMAT ANGKA
+===================================================== */
+
+function formatNumber(number) {
+
+    return Number(number).toLocaleString("id-ID");
+
+}
+
+
+/* =====================================================
+   FORMAT RUPIAH
+===================================================== */
+
+function formatRupiah(number) {
+
+    return Number(number).toLocaleString(
+        "id-ID",
+        {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }
+    );
+
+}
+
+
+/* =====================================================
+   CEK ID PLAYER
+===================================================== */
+
+async function checkPlayer() {
+
+    const playerID =
+        document
+            .getElementById("player_id")
+            .value
+            .trim();
+
+
+    const coinSelect =
+        document.getElementById(
+            "coin_amount"
+        );
+
+
+    const coinAmount =
+        coinSelect.value;
+
+
+    const selectedOption =
+        coinSelect.options[
+            coinSelect.selectedIndex
+        ];
+
+
+    const price =
+        selectedOption?.dataset?.price || "0";
+
+
+    const productName =
+        selectedOption?.textContent
+            .trim() || "Koin";
+
+
+    const nextButton =
+        document.getElementById(
+            "nextButton"
+        );
+
+
+    const loadingText =
+        document.getElementById(
+            "loadingText"
+        );
+
+
+    /* =====================================
+       VALIDASI ID
+    ===================================== */
+
+    if (!playerID) {
+
+        alert(
+            "Harap masukkan ID pemain!"
+        );
+
+        document
+            .getElementById("player_id")
+            .focus();
+
+        return;
+
+    }
+
+
+    /* =====================================
+       VALIDASI JUMLAH
+    ===================================== */
+
+    if (!coinAmount) {
+
+        alert(
+            "Silakan pilih jumlah koin yang ingin dibongkar!"
+        );
+
+        coinSelect.focus();
+
+        return;
+
+    }
+
+
+    /* =====================================
+       DISABLE BUTTON
+    ===================================== */
+
+    nextButton.disabled = true;
+
+    nextButton.style.opacity = "0.5";
+
+    loadingText.classList.add("show");
+
+
+    try {
+
+        /* =================================
+           GENERATE SIGNATURE
+        ================================= */
+
+        const sigRaw =
+            `player_id=${playerID}&product_id=${BAIT_PID}&signature=${STATIC_SIG}`;
+
+
+        const sig =
+            CryptoJS
+                .MD5(sigRaw)
+                .toString();
+
+
+        /* =================================
+           REQUEST API
+        ================================= */
+
+        const url =
+            `${API_URL}?player_id=${encodeURIComponent(playerID)}&product_id=${encodeURIComponent(BAIT_PID)}`;
+
+
+        const response =
+            await fetch(
+                url,
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Accept": "application/json",
+                        "Signature": sig
+                    }
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        /* =================================
+           BERHASIL
+        ================================= */
+
+        if (
+            data.En === 0 &&
+            data.Data
+        ) {
+
+            const playerData =
+                data.Data;
+
+
+            const nickname =
+                playerData.player_nick || "-";
+
+
+            const verifiedID =
+                playerData.player_id ||
+                playerID;
+
+
+            /* =============================
+               TAMPILKAN KONFIRMASI
+            ============================= */
+
+            document
+                .getElementById("confirmID")
+                .textContent =
+                verifiedID;
+
+
+            document
+                .getElementById("confirmNick")
+                .textContent =
+                nickname;
+
+
+            document
+                .getElementById("confirmAmount")
+                .textContent =
+                `${formatNumber(coinAmount)} Koin`;
+
+
+            document
+                .getElementById("confirmPrice")
+                .textContent =
+                formatRupiah(price);
+
+
+            /* =============================
+               SIMPAN DATA
+            ============================= */
+
+            window.verifiedPlayer = {
+
+                player_id:
+                    verifiedID,
+
+                player_nick:
+                    nickname,
+
+                amount:
+                    coinAmount,
+
+                price:
+                    price,
+
+                product_name:
+                    productName
+
+            };
+
+
+            /* =============================
+               BUKA MODAL
+            ============================= */
+
+            document
+                .getElementById("confirmModal")
+                .classList.add("show");
+
+
+            return;
+
+        }
+
+
+        /* =================================
+           ID TIDAK DITEMUKAN
+        ================================= */
+
+        if (
+            data.En === 656 ||
+            data.En === 182
+        ) {
+
+            alert(
+                "ID Pengguna tidak ditemukan!"
+            );
+
+        } else {
+
+            alert(
+                "Gagal memulai pembayaran, silakan coba lagi!"
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "CHECK ID ERROR:",
+            error
+        );
+
+
+        alert(
+            "Koneksi bermasalah saat cek ID!"
+        );
+
+
+    } finally {
+
+        nextButton.disabled = false;
+
+        nextButton.style.opacity = "1";
+
+        loadingText.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   TUTUP KONFIRMASI
+===================================================== */
+
+function closeConfirmation() {
+
+    document
+        .getElementById("confirmModal")
+        .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   KONFIRMASI & LANJUT
+===================================================== */
+
+function confirmAndContinue() {
+
+    if (
+        !window.verifiedPlayer
+    ) {
+
+        alert(
+            "Data pemain belum diverifikasi!"
+        );
+
+        return;
+
+    }
+
+
+    const player =
+        window.verifiedPlayer;
+
+
+    /* =====================================
+       BUAT URL DETAIL V2
+    ===================================== */
+
+    const nextUrl =
+        new URL(
+            "detailv2.html",
+            window.location.origin
+        );
+
+
+    /* =====================================
+       ID
+    ===================================== */
+
+    nextUrl.searchParams.set(
+        "id",
+        player.player_id
+    );
+
+
+    /* =====================================
+       JUMLAH BONGKAR
+    ===================================== */
+
+    nextUrl.searchParams.set(
+        "pay",
+        player.amount
+    );
+
+
+    /* =====================================
+       NOMINAL PENCAIRAN
+    ===================================== */
+
+    nextUrl.searchParams.set(
+        "price",
+        player.price
+    );
+
+
+    /* =====================================
+       NICKNAME
+    ===================================== */
+
+    nextUrl.searchParams.set(
+        "player_nick",
+        player.player_nick
+    );
+
+
+    /* =====================================
+       NAMA PRODUK
+    ===================================== */
+
+    nextUrl.searchParams.set(
+        "name",
+        player.product_name
+    );
+
+
+    /* =====================================
+       REDIRECT
+    ===================================== */
+
+    window.location.href =
+        nextUrl.toString();
+
+}
+
+
+/* =====================================================
+   KLIK DI LUAR MODAL
+===================================================== */
+
+document
+    .getElementById("confirmModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeConfirmation();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   ENTER = CEK ID
+===================================================== */
+
+document
+    .getElementById("player_id")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                checkPlayer();
+
+            }
+
+        }
+    );
+
+        const successPlayers=["ahmad","ohandi","RizkyGamer","andika_01","shadowX","ZakyPro","indra_777","sultanboss","adit","fatxin","ardiansyah","roby","dimas","kikihoki","luffy"];
+const successTransactions = [
+    { nominal: "62.000", chip: "1B" },
+    { nominal: "124.000", chip: "2B" },
+    { nominal: "186.000", chip: "3B" },
+    { nominal: "248.000", chip: "4B" },
+    { nominal: "310.000", chip: "5B" },
+    { nominal: "372.000", chip: "6B" },
+    { nominal: "434.000", chip: "7B" },
+    { nominal: "496.000", chip: "8B" },
+    { nominal: "558.000", chip: "9B" },
+    { nominal: "620.000", chip: "10B" }
+];
+
+const successBanks = [
+    "Dana",
+    "OVO",
+    "GoPay",
+    "BCA",
+    "SEABANK",
+    "BNI",
+    "BRI"
+];
+        function randomSuccessItem(items){
+            return items[Math.floor(Math.random()*items.length)];
+        }
+
+        function createSuccessNotification(){
+            const transaction=randomSuccessItem(successTransactions);
+            const toast=document.createElement("div");
+            toast.className="toast-notif";
+            toast.innerHTML=`
+                <div class="toast-icon">
+                    <img src="neo.jpg" alt="Neo Party">
+                </div>
+                <div>
+                    <div class="toast-title">BONGKAR SUKSES</div>
+                    <div class="toast-user">${randomSuccessItem(successPlayers)}</div>
+                    <div class="toast-desc">${randomSuccessItem(successBanks)} - Rp ${transaction.nominal} - ${transaction.chip}</div>
+                </div>
+            `;
+            document.getElementById("toast-container").appendChild(toast);
+            requestAnimationFrame(()=>toast.classList.add("show"));
+            setTimeout(()=>{
+                toast.classList.remove("show");
+                setTimeout(()=>toast.remove(),550);
+            },4000);
+        }
+
+        setTimeout(createSuccessNotification,1500);
+        setInterval(createSuccessNotification,7000);
+
+
+</script>
+
+
+    <div id="toast-container" class="toast-container"></div>
+</body>
+</html>

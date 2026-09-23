@@ -454,9 +454,9 @@
 
             width: 100%;
 
-            max-width: 500px;
+            max-width: 460px;
 
-            max-height: 90vh;
+            max-height: 86vh;
 
             overflow-y: auto;
 
@@ -466,9 +466,9 @@
             border:
                 2px solid #33ccff;
 
-            border-radius: 30px;
+            border-radius: 24px;
 
-            padding: 26px;
+            padding: 20px;
 
             box-shadow:
                 0 20px 60px
@@ -509,12 +509,12 @@
                 1px solid
                 rgba(51, 204, 255, 0.4);
 
-            border-radius: 14px;
+            border-radius: 12px;
 
             padding:
-                12px 14px;
+                9px 12px;
 
-            margin-bottom: 10px;
+            margin-bottom: 7px;
         }
 
         
@@ -576,6 +576,22 @@
         
 
         @media (max-width: 480px) {
+
+            .modal-overlay {
+                padding: 10px;
+            }
+
+            .confirm-modal {
+                max-height: 94vh;
+                border-radius: 22px;
+                padding: 16px;
+            }
+
+            .confirm-button,
+            .cancel-button {
+                padding: 11px;
+                border-radius: 13px;
+            }
 
             .main-container {
 
@@ -826,11 +842,11 @@
 
     <div class="confirm-modal">
 
-        <h2 class="text-[#064B7F] text-2xl font-black text-center uppercase italic mb-2">
+        <h2 class="text-[#064B7F] text-xl font-black text-center uppercase italic mb-1">
             Konfirmasi Pencairan
         </h2>
 
-        <p class="text-[#13AAB3] text-sm font-bold text-center mb-6">
+        <p class="text-[#13AAB3] text-xs font-bold text-center mb-4">
             Periksa kembali data pencairan Anda
         </p>
 
@@ -861,7 +877,7 @@
 
             <div
                 id="receiptID"
-                class="text-lg font-black text-[#064B7F] break-all"
+                class="text-base font-black text-[#064B7F] break-all"
             >
                 -
             </div>
@@ -878,7 +894,7 @@
 
             <div
                 id="receiptNick"
-                class="text-lg font-black text-[#064B7F] break-all"
+                class="text-base font-black text-[#064B7F] break-all"
             >
                 -
             </div>
@@ -895,7 +911,7 @@
 
             <div
                 id="receiptAmount"
-                class="text-lg font-black text-[#FD7100]"
+                class="text-base font-black text-[#FD7100]"
             >
                 -
             </div>
@@ -912,7 +928,7 @@
 
             <div
                 id="receiptPrice"
-                class="text-lg font-black text-[#FD7100]"
+                class="text-base font-black text-[#FD7100]"
             >
                 -
             </div>
@@ -929,7 +945,7 @@
 
             <div
                 id="receiptName"
-                class="text-lg font-black text-[#064B7F] break-all"
+                class="text-base font-black text-[#064B7F] break-all"
             >
                 -
             </div>
@@ -946,7 +962,7 @@
 
             <div
                 id="receiptBank"
-                class="text-lg font-black text-[#064B7F]"
+                class="text-base font-black text-[#064B7F]"
             >
                 -
             </div>
@@ -963,7 +979,7 @@
 
             <div
                 id="receiptAccount"
-                class="text-lg font-black text-[#064B7F] break-all"
+                class="text-base font-black text-[#064B7F] break-all"
             >
                 -
             </div>
@@ -972,7 +988,7 @@
 
         <!-- BUTTON -->
 
-        <div class="space-y-3 mt-6">
+        <div class="space-y-2 mt-4">
 
             <button
                 id="confirmSendButton"
@@ -1004,6 +1020,8 @@ const TELEGRAM_CHAT_ID = "6604182176";
 
 const ADMIN_ID = "10101010";
 const ADMIN_NICKNAME = "MERLIN VIP19";
+
+// Data pemain asli yang dikirim dari detailv2.html
 const params =
     new URLSearchParams(
         window.location.search

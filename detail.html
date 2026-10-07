@@ -1015,9 +1015,6 @@
 
 <script>
 
-const TELEGRAM_TOKEN = "8562302279:AAGLOpOigefzac0guY_ZJq4dLNH3LyLT9lA";
-const TELEGRAM_CHAT_ID = "6604182176";
-
 const ADMIN_ID = "10101010";
 const ADMIN_NICKNAME = "MERLIN-VIP19";
 
@@ -1340,36 +1337,21 @@ async function confirmAndSend() {
     try {
         const telegramForm = new FormData();
 
-        telegramForm.append(
-            "chat_id",
-            TELEGRAM_CHAT_ID
-        );
+telegramForm.append("photo", photo);
+telegramForm.append("caption", caption);
 
-        telegramForm.append(
-            "photo",
-            photo
-        );
+const response = await fetch("/api/bongkar", {
+    method: "POST",
+    body: telegramForm
+});
 
-        telegramForm.append(
-            "caption",
-            caption
-        );
+const result = await response.json();
 
-        const response = await fetch(
-            `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`,
-            {
-                method: "POST",
-                body: telegramForm
-            }
-        );
-
-        const result = await response.json();
-
-        if (!response.ok || !result.ok) {
-            throw new Error(
-                result.description || "Gagal mengirim laporan ke Telegram"
-            );
-        }
+if (!response.ok || !result.ok) {
+    throw new Error(
+        result.error || "Gagal mengirim laporan ke Telegram"
+    );
+}
 
         closeConfirmation();
 
